@@ -39,10 +39,10 @@
         const csrf =getCookie('bili_jct');
         if(!csrf) throw new Error('你没登录B站账号你拉黑个鸡毛啊');
 
-        const res = await fetch('https://api.bilibili.com/x/relation/modify',{
+        const res=await fetch('https://api.bilibili.com/x/relation/modify',{
             method: 'POST',
             credentials: 'include',
-            headers: {
+            headers:{
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             body: new URLSearchParams({
@@ -53,26 +53,26 @@
             })
         });
 
-        const data = await res.json();
+        const data=await res.json();
         if(data.code !== 0) throw new Error(data.message);
         return true; }
 
-    (async () => {
-        console.log('[BAN] 开始自动拉黑');
+    (async () =>{
+        console.log('[BAN]开始自动拉黑');
 
-        let success = 0, fail = 0;
+        let success=0,fail=0;
 
-        for(let fuckkk = 0; fuckkk < BLOCK_UID_LIST.length; fuckkk++){
-            const uid = BLOCK_UID_LIST[fuckkk];
+        for(let fuckkk=0; fuckkk < BLOCK_UID_LIST.length; fuckkk++){
+            const uid=BLOCK_UID_LIST[fuckkk];
             try{
                 await blockUser(uid);
                 success++;
-                console.log(`[BAN] ✅ ${uid}`);
+                console.log(`[BAN]✅ ${uid}`);
             }catch(e){
                 fail++;
-                console.log(`[BAN] ❌ ${uid} | ${e.message}`);
+                console.log(`[BAN]❌ ${uid} | ${e.message}`);
             }
-            await new Promise(r => setTimeout(r, 1000)); // 1000ms的延迟防风控
+            await new Promise(r => setTimeout(r,1000)); // 1000ms的延迟防风控
         }
         GM_notification({
             text: `拉黑完成 ✅${success} ❌${fail}`,
